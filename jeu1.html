@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>English Adventure</title>
+
+<style>
+
+body{
+    font-family:Arial, sans-serif;
+    background:linear-gradient(to bottom,#87ceeb,#ffffff);
+    text-align:center;
+    margin:0;
+    padding:20px;
+}
+
+h1{
+    color:#003366;
+}
+
+.card{
+    max-width:700px;
+    margin:auto;
+    background:white;
+    padding:20px;
+    border-radius:20px;
+    box-shadow:0 0 15px rgba(0,0,0,.2);
+}
+
+button{
+    margin:8px;
+    padding:12px 20px;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:18px;
+}
+
+.choice{
+    background:#f0f0f0;
+}
+
+.choice:hover{
+    background:#d9f0ff;
+}
+
+#result{
+    font-size:22px;
+    margin-top:15px;
+    min-height:30px;
+}
+
+#score{
+    font-size:24px;
+    margin-bottom:15px;
+}
+
+#rocket{
+    font-size:50px;
+    transition:all .5s;
+}
+
+.progress{
+    width:100%;
+    height:25px;
+    background:#ddd;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.progress-bar{
+    height:100%;
+    width:0%;
+    background:limegreen;
+}
+
+.menu button{
+    background:#4caf50;
+    color:white;
+}
+
+.speak{
+    background:#2196f3;
+    color:white;
+}
+
+</style>
+</head>
+<body>
+
+<h1>🚀 English Adventure</h1>
+
+<div id="score">⭐ Score : 0</div>
+
+<div id="rocket">🚀</div>
+
+<div class="progress">
+    <div class="progress-bar" id="progress"></div>
+</div>
+
+<br>
+
+<div class="card">
+
+<div class="menu">
+<button onclick="startDictionary()">📖 Dico</button>
+<button onclick="startQuiz()">🎯 Quiz</button>
+<button onclick="startOral()">🎤 Oral Exam</button>
+</div>
+
+<hr>
+
+<h2 id="question">
+Choose a game!
+</h2>
+
+<div id="answers"></div>
+
+<div id="result"></div>
+
+</div>
+
+<script>
+
+let score=0;
+let progress=0;
+let currentQuestion={};
+
+const dictionaryWords = [
+
+/* COLOURS */
+{word:"Red", fr:"Rouge"},
+{word:"Blue", fr:"Bleu"},
+{word:"Green", fr:"Vert"},
+{word:"Yellow", fr:"Jaune"},
+{word:"Pink", fr:"Rose"},
+
+/* DAYS */
+{word:"Monday", fr:"Lundi"},
+{word:"Tuesday", fr:"Mardi"},
+{word:"Wednesday", fr:"Mercredi"},
+{word:"Thursday", fr:"Jeudi"},
+{word:"Friday", fr:"Vendredi"},
+{word:"Saturday", fr:"Samedi"},
+{word:"Sunday", fr:"Dimanche"},
+
+/* MONTHS */
+{word:"January", fr:"Janvier"},
+{word:"February", fr:"Février"},
+{word:"March", fr:"Mars"},
+{word:"April", fr:"Avril"},
+{word:"May", fr:"Mai"},
+{word:"June", fr:"Juin"},
+{word:"July", fr:"Juillet"},
+{word:"August", fr:"Août"},
+{word:"September", fr:"Septembre"},
+{word:"October", fr:"Octobre"},
+{word:"November", fr:"Novembre"},
+{word:"December", fr:"Décembre"},
+
+/* SEASONS */
+{word:"Spring", fr:"Printemps"},
+{word:"Summer", fr:"Été"},
+{word:"Autumn", fr:"Automne"},
+{word:"Winter", fr:"Hiver"},
+
+/* FEELINGS */
+{word:"Happy", fr:"Joyeux"},
+{word:"Fine", fr:"Bien"},
+{word:"Sad", fr:"Triste"},
+{word:"Shy", fr:"Timide"},
+
+/* PETS */
+{word:"Dog", fr:"Chien"},
+{word:"Cat", fr:"Chat"},
+{word:"Rabbit", fr:"Lapin"},
+
+/* WEATHER */
+{word:"Sunny", fr:"Ensoleillé"},
+{word:"Cloudy", fr:"Nuageux"},
+{word:"Foggy", fr:"Brumeux"},
+{word:"Stormy", fr:"Orageux"},
+{word:"Rainy", fr:"Pluvieux"},
+
+/* TRANSPORT */
+{word:"By car", fr:"En voiture"},
+{word:"By bus", fr:"En bus"},
+{word:"On foot", fr:"À pied"},
+{word:"By bike", fr:"Á vélo"}
+
+];
+
+// ----- Quizz questions ----- //
+const quizQuestions=[
+
+{
+question:"What's your favourite colour?",
+options:["Blue","Dog","Bus","Winter"],
+correct:0
+},
+
+{
+question:"How do you go to school?",
+options:["Rabbit","By bike","Happy","Sunny"],
+correct:1
+},
+
+{
+question:"What's your favourite animal?",
+options:["Monday","Blue","Rainy","Dog"],
+correct:3
+},
+
+{
+question:"How do you feel today?",
+options:["Bus","January","Happy", "Green"],
+correct:2
+},
+
+{
+question:"What's the weather like today?",
+options:["Sunny","Cat","Bus","Monday"],
+correct:0
+},
+
+{question:"Birthday",
+options:["Chien","Bleu","Anniversaire","Mars"],
+correct:2},
+
+{question:"Weather",
+options:["Temps (météo)","Vert","Janvier","Pied"],
+correct:0},
+
+{question:"Monday",
+options:["Mercredi","Dimanche","Jeudi","Lundi"],
+correct:3},
+
+{question:"Tuesday",
+options:["Dimanche","Jeudi","Mardi", "Lundi"],
+correct:2},
+
+{question:"Wednesday",
+options:["Mercredi","Dimanche","Jeudi","Samedi"],
+correct:0},
+
+{question:"Thursday",
+options:["Mercredi","Dimanche","Jeudi","Samedi"],
+correct:2},
+
+{question:"Friday",
+options:["Vendredi","Dimanche","Jeudi","Samedi"],
+correct:0},
+
+{question:"Saturday",
+options:["Vendredi","Dimanche","Jeudi","Samedi"],
+correct:3},
+
+{question:"Red",
+options:["Jaune","Rose","Vert","rouge"],
+correct:3},
+
+{question:"Yellow",
+options:["Jaune","Rose","Vert","rouge"],
+correct:0},
+
+{question:"Pink",
+options:["Jaune","Rose","Vert","rouge"],
+correct:1},
+
+{question:"Green",
+options:["Jaune","Rose","Vert","rouge"],
+correct:2},
+
+{question:"When is your birthday?",
+options:["Dog","Blue","In March","Bus"],
+correct:2}
+
+];
+
+// ----- Oral questions ----- //
+const oralQuestions=[
+
+"What's your name?",
+"Are you a girl or a boy?",
+"How old are you?",
+"What is your favourite colour?",
+"What day do you like?",
+"When is your birthday?",
+"What is your favourite season?",
+"How do you feel today?",
+"What's the weather like today?",
+"What is your favourite animal?",
+"Have you got a pet?",
+"How do you go to school?"
+
+];
+
+function speak(text){
+
+let u = new SpeechSynthesisUtterance(text);
+
+u.lang="en-GB";
+
+speechSynthesis.speak(u);
+
+}
+
+function updateScore(){
+
+document.getElementById("score").innerHTML=
+"⭐ Score : "+score;
+
+document.getElementById("progress").style.width=
+progress+"%";
+
+}
+
+let currentDico = null;
+
+function shuffle(array){
+
+for(let i=array.length-1;i>0;i--){
+
+const j=Math.floor(Math.random()*(i+1));
+
+[array[i],array[j]]=[array[j],array[i]];
+}
+
+return array;
+}
+
+function startDictionary(){
+
+document.getElementById("result").innerHTML="";
+
+currentDico =
+dictionaryWords[
+Math.floor(Math.random()*dictionaryWords.length)
+];
+
+const wrongAnswers =
+dictionaryWords
+.filter(x=>x.fr!==currentDico.fr)
+.sort(()=>Math.random()-0.5)
+.slice(0,3)
+.map(x=>x.fr);
+
+let answers = [
+currentDico.fr,
+...wrongAnswers
+];
+
+answers = shuffle(answers);
+
+document.getElementById("question").innerHTML = `
+🎧 Listen and choose
+
+<button class="speak"
+onclick="speak('${currentDico.word}')">
+🔊
+</button>
+
+<button onclick="toggleWord()">
+👀 Show word
+</button>
+
+<div id="hiddenWord"
+style="display:none;margin-top:10px;">
+<b>${currentDico.word}</b>
+</div>
+`;
+
+let html="";
+
+answers.forEach(answer=>{
+
+html += `
+<button class="choice"
+onclick="checkDico('${answer}')">
+${answer}
+</button><br>
+`;
+
+});
+
+document.getElementById("answers").innerHTML=html;
+}
+
+function checkDico(answer){
+
+if(answer===currentDico.fr){
+
+score += 10;
+
+progress =
+Math.min(progress+5,100);
+
+document.getElementById("result").innerHTML =
+"✅ Correct!";
+
+}
+else{
+
+document.getElementById("result").innerHTML =
+"❌ Wrong answer";
+
+}
+
+updateScore();
+
+setTimeout(startDictionary,1200);
+}
+
+function toggleWord(){
+
+const div =
+document.getElementById("hiddenWord");
+
+if(div.style.display==="none"){
+
+div.style.display="block";
+
+}else{
+
+div.style.display="none";
+
+}
+}
+
+function startQuiz(){
+
+nextQuiz();
+
+}
+
+function nextQuiz(){
+
+document.getElementById("result").innerHTML="";
+
+currentQuestion =
+quizQuestions[Math.floor(Math.random()*quizQuestions.length)];
+
+document.getElementById("question").innerHTML=
+currentQuestion.question+
+' <button class="speak" onclick="speakCurrent()">🔊</button>';
+
+let html="";
+
+currentQuestion.options.forEach((opt,index)=>{
+
+html += `
+<button class="choice"
+onclick="checkAnswer(${index})">
+${opt}
+</button><br>
+`;
+
+});
+
+document.getElementById("answers").innerHTML=html;
+
+}
+
+function speakCurrent(){
+
+speak(currentQuestion.question);
+
+}
+
+function checkAnswer(index){
+
+if(index===currentQuestion.correct){
+
+score+=10;
+progress=Math.min(progress+10,100);
+
+document.getElementById("result").innerHTML=
+"✅ Great job!";
+
+}
+else{
+
+document.getElementById("result").innerHTML=
+"❌ Try again";
+
+}
+
+updateScore();
+
+setTimeout(nextQuiz,1000);
+
+}
+
+function startOral(){
+
+let q=
+oralQuestions[
+Math.floor(Math.random()*oralQuestions.length)
+];
+
+document.getElementById("question").innerHTML=
+q+
+' <button class="speak" onclick="speakOral()">🔊</button>';
+
+window.currentOral=q;
+
+document.getElementById("answers").innerHTML=
+`
+<p>🎤 Answer aloud!</p>
+
+<button onclick="showExample()">
+Show an example
+</button>
+`;
+
+document.getElementById("result").innerHTML="";
+
+}
+
+function speakOral(){
+
+speak(window.currentOral);
+
+}
+
+function showExample(){
+
+const examples={
+
+"What's your name?":
+"My name is Emma.",
+
+"Are you a girl or a boy?":
+"I am a girl.",
+
+"How old are you?":
+"I am 9 years old.",
+
+"What is your favourite colour?":
+"My favourite colour is blue.",
+
+"What day do you like?":
+"My favourite day is Saturday.",
+
+"When is your birthday?":
+"My birthday is in May.",
+
+"What is your favourite season?":
+"My favourite season is summer.",
+
+"How do you feel today?":
+"Today I feel happy.",
+
+"What's the weather like today?":
+"It's sunny today.",
+
+"What is your favourite animal?":
+"My favourite animal is a dog.",
+
+"Have you got a pet?":
+"I have got a cat at home.",
+
+"How do you go to school?":
+"I go to school by bus."
+
+};
+
+let text=examples[window.currentOral];
+
+document.getElementById("result").innerHTML=
+"💡 "+text;
+
+speak(text);
+
+score+=5;
+
+updateScore();
+
+}
+
+updateScore();
+
+</script>
+
+</body>
+</html>
