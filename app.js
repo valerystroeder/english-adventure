@@ -22,7 +22,7 @@ let oralRecognition = null;
 let oralListening = false;
 
 // Seuil de tolérance pour la reconnaissance vocale (0.0 = très laxiste, 1.0 = strictement exact)
-const speechRecognitionTolerance = 0.6;
+const speechRecognitionTolerance = 0.65;
 
 // Liste des catégories disponibles, dérivée des mots du dictionnaire (défini dans data.js)
 const categories = [...new Set(dictionaryWords.map(word => word.cat))].sort();
