@@ -560,7 +560,10 @@ function updateBadges(){
             html += `<span class="notbadge">🏆 ${category} (${total}/10 - ${Math.round(ratio*100)}%)</span>`;
         }
     }
-    document.getElementById("badges").innerHTML = html;
+    const badgesElement = document.getElementById("badges");
+    if(badgesElement){
+        badgesElement.innerHTML = html;
+    }
 }
 
 // Remet à zéro la progression utilisateur (confirme avant)
