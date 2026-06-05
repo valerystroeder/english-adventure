@@ -1,0 +1,8 @@
+{
+  "name": "English Adventure",
+  "short_name": "English",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#87ceeb",
+  "theme_color": "#4caf50"
+}

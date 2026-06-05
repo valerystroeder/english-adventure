@@ -1,20 +1,30 @@
 <!DOCTYPE html>
-<html lang="en"><head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>English Adventure</title>
+<link rel="manifest" href="manifest.json">
 <link rel="stylesheet" href="style.css">
+<meta name="theme-color" content="#4caf50">
 </head>
 <body>
 <h1>🚀 English Adventure</h1>
-<div id="score"></div>
-<div class="menu">
-<button onclick="showQuiz()">🎯 Quiz</button>
-<button onclick="showOral()">🎤 Oral</button>
-<button onclick="showMemory()">🧠 Memory</button>
-</div>
+<div id="score">⭐ Score : 0</div>
+<!-- <div id="badges"></div> -->
+<div class="progress"><div id="progress" class="progress-bar"></div></div>
 <div class="card">
-<h2 id="question">Welcome!</h2>
-<div id="content"></div>
+<div class="menu">
+<button onclick="startDictionary()">📖 Dico</button>
+<button onclick="startQuestions()">❓ Questions</button>
+<button onclick="startPuzzle()">🧩 Puzzle</button>
+<button onclick="startPuzzlePlus()">🧩+ Puzzle+</button>
+<button onclick="startOral()">🎙️ Oral</button>
+<button onclick="resetProgress()">🔄 Reset</button>
+</div>
+<hr>
+<h2 id="question">Choose a game!</h2>
+<div id="answers"></div>
 <div id="result"></div>
 </div>
 <script src="data.js"></script>
