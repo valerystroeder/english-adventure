@@ -268,7 +268,11 @@
         overlay.innerHTML += passed ? '<p>Bravo ! Le niveau suivant est débloqué.</p>' : `<p>Essaie encore pour atteindre ${adventureConfig.passPercentage}%.</p>`;
         const btn = document.createElement('div');
         btn.style.marginTop = '12px';
-        btn.innerHTML = passed ? `<button class="big-btn">Retour à la carte</button>` : `<button class="big-btn">Réessayer</button>`;
+        if(passed){
+            btn.innerHTML = `<hr><button class="reset-button">Retour à la carte</button>`;
+        } else {
+            btn.innerHTML = `<button class="big-btn">Réessayer</button>`;
+        }
         overlay.appendChild(btn);
         document.body.appendChild(overlay);
         btn.querySelector('button').addEventListener('click', ()=>{
@@ -287,7 +291,7 @@
         overlay.innerHTML = `<h2>Félicitations !!!</h2><p>Madame Christelle a retrouvé la mémoire !!!</p><p>Thank you !!</p><p>Score: ${percent}%</p>`;
         const btn = document.createElement('div');
         btn.style.marginTop = '12px';
-        btn.innerHTML = `<button class="big-btn">Terminé</button>`;
+        btn.innerHTML = `<hr><button class="reset-button">Terminé</button>`;
         overlay.appendChild(btn);
         document.body.appendChild(overlay);
         createConfetti();
@@ -386,14 +390,16 @@
         const resEl = document.getElementById('result');
         resEl.innerHTML = '<div id="advFeedback"></div>';
         const feedback = document.getElementById('advFeedback');
+        const hr = document.createElement('hr');
         const quitBtn = document.createElement('button');
-        quitBtn.className = 'big-btn';
+        quitBtn.className = 'reset-button';
         quitBtn.textContent = 'Retour à la carte';
         quitBtn.style.marginTop = '10px';
         quitBtn.addEventListener('click', ()=>{
             adventureState.playing = false;
             showMapView();
         });
+        resEl.appendChild(hr);
         resEl.appendChild(quitBtn);
         aEl.innerHTML = '';
 
@@ -454,7 +460,7 @@
             speakBtn.addEventListener('click', ()=> speak(item.question));
             qEl.appendChild(speakBtn);
             speak(item.question);
-            aEl.innerHTML = `<p>🎙️ Click record and say: <strong>${item.expected}</strong></p><button id="advRecord">🎤 Record</button><div id="advOralHint"></div>`;
+            aEl.innerHTML = `<p>🎙️ Clic sur Parler dit: <strong>${item.expected}</strong></p><button id="advRecord">🎤 Parler</button><div id="advOralHint"></div>`;
             const recBtn = document.getElementById('advRecord');
             recBtn.addEventListener('click', ()=>{
                 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
