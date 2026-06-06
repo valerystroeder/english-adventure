@@ -12,11 +12,13 @@
         const advBtn = qs('adventureStart');
         const trainBtn = qs('trainingStart');
         const mainCard = qs('mainCard');
+        const backBtn = qs('backButton');
 
         advBtn.addEventListener('click', () => {
             const bd = document.getElementById('badges'); if(bd) bd.style.display = 'none';
             document.getElementById('startScreen').style.display = 'none';
             mainCard.style.display = 'block';
+            if(backBtn) backBtn.style.display = 'block';
             body.classList.add('adventure-mode');
             window.adventureModeActive = true;
             showAdventureIntro();
@@ -25,12 +27,25 @@
         trainBtn.addEventListener('click', () => {
             document.getElementById('startScreen').style.display = 'none';
             mainCard.style.display = 'block';
+            if(backBtn) backBtn.style.display = 'block';
             body.classList.remove('adventure-mode');
             window.adventureModeActive = false;
             document.getElementById('score').style.display = 'block';
             const map = document.getElementById('adventureMap');
             if(map){ map.style.display = 'none'; }
         });
+
+        if(backBtn){
+            backBtn.addEventListener('click', ()=>{
+                // stop current level and go back to start screen
+                adventureState.playing = false;
+                document.getElementById('mainCard').style.display = 'none';
+                document.getElementById('startScreen').style.display = 'flex';
+                body.classList.remove('adventure-mode');
+                window.adventureModeActive = false;
+                backBtn.style.display = 'none';
+            });
+        }
     });
 
     function loadProgress(){
