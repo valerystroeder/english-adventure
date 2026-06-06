@@ -22,7 +22,7 @@ let oralRecognition = null;
 let oralListening = false;
 
 // Seuil de tolérance pour la reconnaissance vocale (0.0 = très laxiste, 1.0 = strictement exact)
-const speechRecognitionTolerance = 0.65;
+const speechRecognitionTolerance = 0.72;
 
 // Liste des catégories disponibles, dérivée des mots du dictionnaire (défini dans data.js)
 const categories = [...new Set(dictionaryWords.map(word => word.cat))].sort();
@@ -569,6 +569,10 @@ function updateBadges(){
 // Remet à zéro la progression utilisateur (confirme avant)
 function resetProgress(){
     if(!confirm("Reset all progress ?")){ return; }
+    if(window.adventureModeActive && typeof window.resetAdventureProgress === 'function'){
+        window.resetAdventureProgress();
+        return;
+    }
     score = 0;
     progress = 0;
     categoryStats = {};

@@ -6,21 +6,29 @@
 <title>English Adventure</title>
 <link rel="manifest" href="manifest.json">
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="adventure.css">
 <meta name="theme-color" content="#4caf50">
 </head>
 <body>
 <h1>🚀 English Adventure</h1>
 <div id="score">⭐ Score : 0</div>
 <!-- <div id="badges"></div> -->
+
+<!-- Écran d'accueil : choix Aventure / Entrainement -->
+<div id="startScreen" class="start-screen">
+	<button id="adventureStart" class="big-btn">🚀 Aventure</button>
+	<button id="trainingStart" class="big-btn">🎯 Entrainement</button>
+</div>
+
 <div class="progress"><div id="progress" class="progress-bar"></div></div>
-<div class="card">
+<div class="card" style="display:none;" id="mainCard">
 <div class="menu">
 <button onclick="startDictionary()">📖 Dico</button>
 <button onclick="startQuestions()">❓ Questions</button>
 <button onclick="startPuzzle()">🧩 Puzzle</button>
 <button onclick="startPuzzlePlus()">🧩+ Puzzle+</button>
 <button onclick="startOral()">🎙️ Oral</button>
-<button onclick="resetProgress()">🔄 Reset</button>
+<button class="reset-button" onclick="resetProgress()">🔄 Reset</button>
 </div>
 <hr>
 <h2 id="question">Choose a game!</h2>
@@ -28,5 +36,13 @@
 <div id="result"></div>
 </div>
 <script src="data.js"></script>
+<script src="adventureData.js"></script>
+<script src="adventure.js"></script>
 <script src="app.js"></script>
+<script>
+if('serviceWorker' in navigator){
+    navigator.serviceWorker.register(
+        './service-worker.js'
+    );}
+</script>
 </body></html>
