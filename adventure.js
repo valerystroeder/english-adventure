@@ -288,7 +288,7 @@
     function showFinalVictory(percent){
         const overlay = document.createElement('div');
         overlay.className = 'result-overlay';
-        overlay.innerHTML = `<h2>Félicitations !!!</h2><p>Madame Christelle a retrouvé la mémoire !!!</p><p>Thank you !!</p><p>Score: ${percent}%</p>`;
+        overlay.innerHTML = `<h2>Félicitations !!!</h2><p>Madame Christelle a retrouvé la mémoire !!!</p><p>Thank you !!</p><p>Score: ${percent}%</p><p>Tu as le droit de demander une chique ou un biscuit à tes parents 😀🍬🍭`;
         const btn = document.createElement('div');
         btn.style.marginTop = '12px';
         btn.innerHTML = `<hr><button class="reset-button">Terminé</button>`;
